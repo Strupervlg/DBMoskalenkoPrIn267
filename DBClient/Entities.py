@@ -60,3 +60,21 @@ class Game:
             return 'Null'
         else:
             return self.IdGameSeries
+
+class GameSeries:
+    def __init__(self, name, coverURL = None, id = None):
+        self.Name = name
+        self.CoverURL = coverURL
+        self.Id = id
+
+    def toString(self):
+        return f"Id: {self.Id}, Name: {self.Name}, Cover URL: {self.CoverURL}"
+
+    def getName(self):
+        return f"'{self.Name}'"
+
+    def getCoverURL(self):
+        if self.CoverURL is None:
+            return 'Null'
+        else:
+            return f"'{self.CoverURL}'"

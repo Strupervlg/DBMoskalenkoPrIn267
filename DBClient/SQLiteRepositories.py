@@ -75,3 +75,72 @@ class SQLiteGameRepository(IGameRepository):
             connection.commit()
         except sqlite3.OperationalError as errorMessage:
             print(errorMessage)
+
+
+class SQLiteGameSeriesRepository(IGameSeriesRepository):
+    def __init__(self):
+        self.connectingStr = "BDGames.db"
+
+    def getAll(self):
+        gameSeries = list()
+        sql = f"SELECT * FROM game_series"
+        try:
+            connection = sqlite3.connect(self.connectingStr)
+            cursor = connection.cursor()
+            cursor.execute(sql)
+            items = cursor.fetchall()
+            for item in items:
+                gameSeries.append(GameSeries(item[1], item[2], item[0]))
+            return gameSeries
+        except sqlite3.OperationalError as errorMessage:
+            print(errorMessage)
+
+    def getById(self, id: int):
+        sql = f"SELECT * FROM game_series WHERE game_series.Id = {id}"
+        try:
+            connection = sqlite3.connect(self.connectingStr)
+            cursor = connection.cursor()
+            cursor.execute(sql)
+            item = cursor.fetchall()
+            if len(item) != 0:
+                gameSeries = item[0]
+                return GameSeries(gameSeries[1], gameSeries[2], gameSeries[0])
+        except sqlite3.OperationalError as errorMessage:
+            print(errorMessage)
+
+    def add(self, gameSeries: GameSeries):
+        sql = f"INSERT INTO game_series (Name, cover_URL)" \
+              f"VALUES ({gameSeries.getName()}, {gameSeries.getCoverURL()})"
+        try:
+            connection = sqlite3.connect(self.connectingStr)
+            cursor = connection.cursor()
+            cursor.execute(sql)
+            connection.commit()
+            idNewGameSeries = cursor.lastrowid
+            gameSeries.Id = idNewGameSeries
+            return gameSeries
+        except sqlite3.OperationalError as errorMessage:
+            print(errorMessage)
+
+    def update(self, gameSeries: GameSeries):
+        sql = f"UPDATE game_series " \
+              f"SET Name = {gameSeries.getName()}, " \
+              f"cover_URL = {gameSeries.getCoverURL()} " \
+              f"WHERE Id = {gameSeries.Id}"
+        try:
+            connection = sqlite3.connect(self.connectingStr)
+            cursor = connection.cursor()
+            cursor.execute(sql)
+            connection.commit()
+        except sqlite3.OperationalError as errorMessage:
+            print(errorMessage)
+
+    def delete(self, gameSeries: GameSeries):
+        sql = f"DELETE FROM game_series WHERE Id = {gameSeries.Id}"
+        try:
+            connection = sqlite3.connect(self.connectingStr)
+            cursor = connection.cursor()
+            cursor.execute(sql)
+            connection.commit()
+        except sqlite3.OperationalError as errorMessage:
+            print(errorMessage)

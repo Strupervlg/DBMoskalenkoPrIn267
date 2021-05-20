@@ -61,6 +61,34 @@ class Game:
         else:
             return self.IdGameSeries
 
+    def setBriefDescription(self, brief: str):
+        if brief != '':
+            self.BriefDescription = brief
+
+    def setDateAnnounce(self, date: str):
+        if date != '':
+            self.DateAnnounce = date
+
+    def setTrailerURL(self, url: str):
+        if url != '':
+            self.TrailerURL = url
+
+    def setGameCoverURL(self, url: str):
+        if url != '':
+            self.GameCoverURL = url
+
+    def setGameWebsiteURL(self, url: str):
+        if url != '':
+            self.GameWebsiteURL = url
+
+    def setIdEngine(self, id: int):
+        if id != 0:
+            self.IdEngine = id
+
+    def setIdGameSeries(self, id: int):
+        if id != 0:
+            self.IdGameSeries = id
+
 class GameSeries:
     def __init__(self, name, coverURL = None, id = None):
         self.Name = name

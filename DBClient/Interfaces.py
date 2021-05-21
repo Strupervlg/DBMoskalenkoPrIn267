@@ -34,3 +34,6 @@ class IGameSeriesRepository(GameSeries):
 
     def delete(self, gameSeries: GameSeries):
         pass
+
+    def getCountGame(self, gameSeries: GameSeries):
+        pass

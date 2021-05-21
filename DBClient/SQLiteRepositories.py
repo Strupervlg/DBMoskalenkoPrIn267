@@ -158,3 +158,17 @@ class SQLiteGameSeriesRepository(IGameSeriesRepository):
             connection.commit()
         except sqlite3.OperationalError as errorMessage:
             print(errorMessage)
+
+    def getCountGame(self, gameSeries: GameSeries):
+        sql = f"SELECT COUNT(games.Id) AS Count_games " \
+              f"FROM games " \
+              f"JOIN game_series ON games.Id_Game_series = game_series.Id " \
+              f"WHERE game_series.Name = {gameSeries.getName()};"
+        try:
+            connection = sqlite3.connect(self.connectingStr)
+            cursor = connection.cursor()
+            cursor.execute(sql)
+            countGame = cursor.fetchall()
+            return countGame[0][0]
+        except sqlite3.OperationalError as errorMessage:
+            print(errorMessage)

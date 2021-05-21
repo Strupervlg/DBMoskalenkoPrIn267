@@ -13,7 +13,10 @@ class SQLiteGameRepository(IGameRepository):
 
     def getAll(self):
         games = list()  # Список игр
-        sql = f"SELECT * FROM games"  # SQL запрос для получение всех игр
+        # SQL запрос для получение всех игр
+        sql = f"SELECT `Id`, `Name`, `Brief_description`, `Date_announce`, `Trailer_URL`, " \
+              f"`Game_cover_URL`, `Game_website_URL`, `Id_Engine`, `Id_Game_series`" \
+              f"FROM games"
         try:
             # Подключение к БД
             connection = sqlite3.connect(self.connectingStr)
@@ -32,7 +35,10 @@ class SQLiteGameRepository(IGameRepository):
             print(errorMessage)
 
     def getById(self, id: int):
-        sql = f"SELECT * FROM games WHERE games.Id = {id}"  # SQL запрос для получение игры по id
+        # SQL запрос для получение игры по id
+        sql = f"SELECT `Id`, `Name`, `Brief_description`, `Date_announce`, `Trailer_URL`, " \
+              f"`Game_cover_URL`, `Game_website_URL`, `Id_Engine`, `Id_Game_series`" \
+              f"FROM games WHERE games.Id = {id}"
         try:
             # Подключение к БД
             connection = sqlite3.connect(self.connectingStr)
@@ -142,7 +148,9 @@ class SQLiteGameSeriesRepository(IGameSeriesRepository):
 
     def getAll(self):
         gameSeries = list()  # Список серий игр
-        sql = f"SELECT * FROM game_series"  # SQL запрос для получения списка серий игр
+        # SQL запрос для получения списка серий игр
+        sql = f"SELECT `Id`, `Name`, `cover_URL` " \
+              f"FROM game_series"
         try:
             # Подключение к БД
             connection = sqlite3.connect(self.connectingStr)
@@ -161,7 +169,10 @@ class SQLiteGameSeriesRepository(IGameSeriesRepository):
             print(errorMessage)
 
     def getById(self, id: int):
-        sql = f"SELECT * FROM game_series WHERE game_series.Id = {id}"  # SQL запрос для получения серии игр по id
+        # SQL запрос для получения серии игр по id
+        sql = f"SELECT `Id`, `Name`, `cover_URL` " \
+              f"FROM game_series " \
+              f"WHERE game_series.Id = {id}"
         try:
             # Подключение к БД
             connection = sqlite3.connect(self.connectingStr)

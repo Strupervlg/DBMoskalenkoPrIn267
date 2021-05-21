@@ -76,6 +76,20 @@ class SQLiteGameRepository(IGameRepository):
         except sqlite3.OperationalError as errorMessage:
             print(errorMessage)
 
+    def getAvgRating(self, game: Game):
+        sql = f"SELECT AVG(reviews.Rating) " \
+              f"FROM reviews " \
+              f"JOIN games ON reviews.id_Game = games.Id " \
+              f"WHERE games.Name = {game.getName()};"
+        try:
+            connection = sqlite3.connect(self.connectingStr)
+            cursor = connection.cursor()
+            cursor.execute(sql)
+            rating = cursor.fetchall()
+            return rating[0][0]
+        except sqlite3.OperationalError as errorMessage:
+            print(errorMessage)
+
 
 class SQLiteGameSeriesRepository(IGameSeriesRepository):
     def __init__(self):

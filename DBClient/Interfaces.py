@@ -16,6 +16,9 @@ class IGameRepository(Game):
     def delete(self, game: Game):
         pass
 
+    def getAvgRating(self, game: Game):
+        pass
+
 class IGameSeriesRepository(GameSeries):
     def getAll(self):
         pass

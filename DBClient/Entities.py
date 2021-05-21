@@ -106,3 +106,7 @@ class GameSeries:
             return 'Null'
         else:
             return f"'{self.CoverURL}'"
+
+    def setCoverURL(self, url: str):
+        if url != '':
+            self.CoverURL = url

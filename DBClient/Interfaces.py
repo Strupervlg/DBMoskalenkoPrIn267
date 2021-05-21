@@ -50,20 +50,50 @@ class IGameRepository(Game):
         pass
 
 class IGameSeriesRepository(GameSeries):
+    """
+    Интерфейс для репозитория серии игр
+    """
     def getAll(self):
+        """
+        Получение всех серий игр
+        :return: список серий игр
+        """
         pass
 
     def getById(self, id: int):
+        """
+        Получение серии игр по айди
+        :param id: айди серии игр
+        :return: серия игр
+        """
         pass
 
     def add(self, gameSeries: GameSeries):
+        """
+        Добавление серии игр в БД
+        :param gameSeries: серия игр
+        :return: серия игр с айди из БД
+        """
         pass
 
     def update(self, gameSeries: GameSeries):
+        """
+        Обновление серии игр в БД
+        :param gameSeries: обновленная серия игр
+        """
         pass
 
     def delete(self, gameSeries: GameSeries):
+        """
+        Удаление серии игр из БД
+        :param gameSeries: серия игр для удаления
+        """
         pass
 
     def getCountGame(self, gameSeries: GameSeries):
+        """
+        Получение кол-во игр в серии игр
+        :param gameSeries: серия игр, для которой расчитывается кол-во игр
+        :return: кол-во игр в серии игр
+        """
         pass

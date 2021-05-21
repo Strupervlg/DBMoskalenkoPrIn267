@@ -131,83 +131,122 @@ class SQLiteGameRepository(IGameRepository):
 
 
 class SQLiteGameSeriesRepository(IGameSeriesRepository):
+    """
+    Класс для работы с таблицей 'серии игр' в SQLite
+    """
     def __init__(self):
+        """
+        Конструктор класса
+        """
         self.connectingStr = "BDGames.db"
 
     def getAll(self):
-        gameSeries = list()
-        sql = f"SELECT * FROM game_series"
+        gameSeries = list()  # Список серий игр
+        sql = f"SELECT * FROM game_series"  # SQL запрос для получения списка серий игр
         try:
+            # Подключение к БД
             connection = sqlite3.connect(self.connectingStr)
             cursor = connection.cursor()
+            # Исполнение SQL запроса
             cursor.execute(sql)
+            # Получение результата SQL запроса
             items = cursor.fetchall()
+            # Создать из полученных данных объекты серий игр
             for item in items:
                 gameSeries.append(GameSeries(item[1], item[2], item[0]))
+            # Вернуть список серий игры
             return gameSeries
         except sqlite3.OperationalError as errorMessage:
+            # Вывести ошибку, если возникло исключение
             print(errorMessage)
 
     def getById(self, id: int):
-        sql = f"SELECT * FROM game_series WHERE game_series.Id = {id}"
+        sql = f"SELECT * FROM game_series WHERE game_series.Id = {id}"  # SQL запрос для получения серии игр по id
         try:
+            # Подключение к БД
             connection = sqlite3.connect(self.connectingStr)
             cursor = connection.cursor()
+            # Исполнение SQL запроса
             cursor.execute(sql)
+            # Получение результата SQL запроса
             item = cursor.fetchall()
+            # Если результат есть, создать объект серии игр и вернуть ее
             if len(item) != 0:
                 gameSeries = item[0]
                 return GameSeries(gameSeries[1], gameSeries[2], gameSeries[0])
         except sqlite3.OperationalError as errorMessage:
+            # Вывести ошибку, если возникло исключение
             print(errorMessage)
 
     def add(self, gameSeries: GameSeries):
+        # SQL запрос для добавления новой серии игр в БД
         sql = f"INSERT INTO game_series (Name, cover_URL)" \
               f"VALUES ({gameSeries.getName()}, {gameSeries.getCoverURL()})"
         try:
+            # Подключение к БД
             connection = sqlite3.connect(self.connectingStr)
             cursor = connection.cursor()
+            # Исполнение SQL запроса
             cursor.execute(sql)
+            # Сохранение БД после добавления игровой серии
             connection.commit()
+            # Взять id добвленной серии игр из БД и присвоить его объекту новой серии игр
             idNewGameSeries = cursor.lastrowid
             gameSeries.Id = idNewGameSeries
+            # Вернуть серию игр
             return gameSeries
         except sqlite3.OperationalError as errorMessage:
+            # Вывести ошибку, если возникло исключение
             print(errorMessage)
 
     def update(self, gameSeries: GameSeries):
+        # SQL запрос для обновленния серии игр в БД
         sql = f"UPDATE game_series " \
               f"SET Name = {gameSeries.getName()}, " \
               f"cover_URL = {gameSeries.getCoverURL()} " \
               f"WHERE Id = {gameSeries.Id}"
         try:
+            # Подключение к БД
             connection = sqlite3.connect(self.connectingStr)
             cursor = connection.cursor()
+            # Исполнение SQL запроса
             cursor.execute(sql)
+            # Сохранение БД после обновления игровой серии
             connection.commit()
         except sqlite3.OperationalError as errorMessage:
+            # Вывести ошибку, если возникло исключение
             print(errorMessage)
 
     def delete(self, gameSeries: GameSeries):
-        sql = f"DELETE FROM game_series WHERE Id = {gameSeries.Id}"
+        sql = f"DELETE FROM game_series WHERE Id = {gameSeries.Id}"  # SQL запрос для удаления серии игр из БД
         try:
+            # Подключение к БД
             connection = sqlite3.connect(self.connectingStr)
             cursor = connection.cursor()
+            # Исполнение SQL запроса
             cursor.execute(sql)
+            # Сохранение БД после удаления игры
             connection.commit()
         except sqlite3.OperationalError as errorMessage:
+            # Вывести ошибку, если возникло исключение
             print(errorMessage)
 
     def getCountGame(self, gameSeries: GameSeries):
+        # SQL запрос для получения кол-во игр в серии игр из БД
         sql = f"SELECT COUNT(games.Id) AS Count_games " \
               f"FROM games " \
               f"JOIN game_series ON games.Id_Game_series = game_series.Id " \
               f"WHERE game_series.Name = {gameSeries.getName()};"
         try:
+            # Подключение к БД
             connection = sqlite3.connect(self.connectingStr)
             cursor = connection.cursor()
+            # Исполнение SQL запроса
             cursor.execute(sql)
+            # Получение результата SQL запроса
             countGame = cursor.fetchall()
+            # Вернуть полученный результат
             return countGame[0][0]
         except sqlite3.OperationalError as errorMessage:
+            # Вывести ошибку, если возникло исключение
             print(errorMessage)

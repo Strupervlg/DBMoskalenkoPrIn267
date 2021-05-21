@@ -169,23 +169,48 @@ class Game:
             self.IdGameSeries = id
 
 class GameSeries:
+    """
+    Класс серии игр
+    """
     def __init__(self, name, coverURL = None, id = None):
+        """
+        Конструктор класса
+        :param name: название серии игр
+        :param coverURL: ссылка на
+        :param id: айди серии игр
+        """
         self.Name = name
         self.CoverURL = coverURL
         self.Id = id
 
     def toString(self):
+        """
+        Перевести объект класса в строку
+        :return: строка состоящая из полей класса
+        """
         return f"Id: {self.Id}, Name: {self.Name}, Cover URL: {self.CoverURL}"
 
     def getName(self):
+        """
+        Получение название серии игр
+        :return: название серии игр
+        """
         return f"'{self.Name}'"
 
     def getCoverURL(self):
+        """
+        Получение ссылки на обложку серии игр
+        :return: ссылка на обложку серии игр
+        """
         if self.CoverURL is None:
             return 'Null'
         else:
             return f"'{self.CoverURL}'"
 
     def setCoverURL(self, url: str):
+        """
+        Установка ссылки на обложку серии игр
+        :param url: ссылка на обложку серии игр
+        """
         if url != '':
             self.CoverURL = url

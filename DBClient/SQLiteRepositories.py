@@ -259,13 +259,13 @@ class SQLiteGameSeriesRepository(IGameSeriesRepository):
         sql = f"SELECT COUNT(games.Id) AS Count_games " \
               f"FROM games " \
               f"JOIN game_series ON games.Id_Game_series = game_series.Id " \
-              f"WHERE game_series.Name = {gameSeries.getName()};"
+              f"WHERE game_series.Name = ?;"
         try:
             # Подключение к БД
             connection = sqlite3.connect(self.connectingStr)
             cursor = connection.cursor()
             # Исполнение SQL запроса
-            cursor.execute(sql)
+            cursor.execute(sql, (gameSeries.getName(),))
             # Получение результата SQL запроса
             countGame = cursor.fetchall()
             connection.close()
@@ -283,8 +283,8 @@ class SQLiteEngineRepository(IEngineRepository):
         self.connectingStr = "BDGames.db"
 
     def getAll(self):
-        engines = list()  # Список серий игр
-        # SQL запрос для получения списка серий игр
+        engines = list()  # Список движков игры
+        # SQL запрос для получения списка движков игры
         sql = f"SELECT `Id`, `Name`" \
               f"FROM engines"
         try:
@@ -295,18 +295,18 @@ class SQLiteEngineRepository(IEngineRepository):
             cursor.execute(sql)
             # Получение результата SQL запроса
             items = cursor.fetchall()
-            # Создать из полученных данных объекты серий игр
+            # Создать из полученных данных объекты движков игры
             for item in items:
                 engines.append(Engine(item[1], item[0]))
             connection.close()
-            # Вернуть список серий игры
+            # Вернуть список движков игры
             return engines
         except sqlite3.OperationalError as errorMessage:
             # Вывести ошибку, если возникло исключение
             print(errorMessage)
 
     def getById(self, id: int):
-        # SQL запрос для получения серии игр по id
+        # SQL запрос для получения движков по id
         sql = f"SELECT `Id`, `Name`" \
               f"FROM engines " \
               f"WHERE engines.Id = ?"
@@ -319,10 +319,149 @@ class SQLiteEngineRepository(IEngineRepository):
             # Получение результата SQL запроса
             item = cursor.fetchall()
             connection.close()
-            # Если результат есть, создать объект серии игр и вернуть ее
+            # Если результат есть, создать объект движка и вернуть ее
             if len(item) != 0:
                 engine = item[0]
                 return Engine(engine[1], engine[0])
         except sqlite3.OperationalError as errorMessage:
             # Вывести ошибку, если возникло исключение
             print(errorMessage)
+
+class SQLiteLanguageRepository(ILanguageRepository):
+    def __init__(self):
+        """
+        Конструктор класса
+        """
+        self.connectingStr = "BDGames.db"
+
+    def getAll(self):
+        languages = list()  # Список языков
+        # SQL запрос для получения списка языков
+        sql = f"SELECT `Id`, `Name`" \
+              f"FROM languages"
+        try:
+            # Подключение к БД
+            connection = sqlite3.connect(self.connectingStr)
+            cursor = connection.cursor()
+            # Исполнение SQL запроса
+            cursor.execute(sql)
+            # Получение результата SQL запроса
+            items = cursor.fetchall()
+            # Создать из полученных данных объекты языков
+            for item in items:
+                languages.append(Language(item[1], item[0]))
+            connection.close()
+            # Вернуть список языков
+            return languages
+        except sqlite3.OperationalError as errorMessage:
+            # Вывести ошибку, если возникло исключение
+            print(errorMessage)
+
+    def getById(self, id: int):
+        # SQL запрос для получения языков по id
+        sql = f"SELECT `Id`, `Name`" \
+              f"FROM languages " \
+              f"WHERE languages.Id = ?"
+        try:
+            # Подключение к БД
+            connection = sqlite3.connect(self.connectingStr)
+            cursor = connection.cursor()
+            # Исполнение SQL запроса
+            cursor.execute(sql, (id,))
+            # Получение результата SQL запроса
+            item = cursor.fetchall()
+            connection.close()
+            # Если результат есть, создать объект языка и вернуть ее
+            if len(item) != 0:
+                languages = item[0]
+                return Language(languages[1], languages[0])
+        except sqlite3.OperationalError as errorMessage:
+            # Вывести ошибку, если возникло исключение
+            print(errorMessage)
+
+    def add(self, language: Language):
+        # SQL запрос для добавления нового языка в БД
+        sql = f"INSERT INTO languages (Name)" \
+              f"VALUES (?)"
+        try:
+            # Подключение к БД
+            connection = sqlite3.connect(self.connectingStr)
+            cursor = connection.cursor()
+            # Исполнение SQL запроса
+            cursor.execute(sql, (language.Name,))
+            # Сохранение БД после добавления языка
+            connection.commit()
+            # Взять id добвленного языка из БД и присвоить его объекту нового языка
+            idNewLanguage = cursor.lastrowid
+            language.Id = idNewLanguage
+            connection.close()
+            # Вернуть язык
+            return language
+        except sqlite3.OperationalError as errorMessage:
+            # Вывести ошибку, если возникло исключение
+            print(errorMessage)
+
+    def update(self, language: Language):
+        # SQL запрос для обновленния языка в БД
+        sql = f"UPDATE languages " \
+              f"SET Name = ? " \
+              f"WHERE Id = ?"
+        try:
+            # Подключение к БД
+            connection = sqlite3.connect(self.connectingStr)
+            cursor = connection.cursor()
+            # Исполнение SQL запроса
+            cursor.execute(sql, (language.Name, language.Id))
+            # Сохранение БД после обновления языка
+            connection.commit()
+            connection.close()
+        except sqlite3.OperationalError as errorMessage:
+            # Вывести ошибку, если возникло исключение
+            print(errorMessage)
+
+    def delete(self, language: Language):
+        sql = f"DELETE FROM languages WHERE Id = ?"  # SQL запрос для удаления языка из БД
+        try:
+            # Подключение к БД
+            connection = sqlite3.connect(self.connectingStr)
+            cursor = connection.cursor()
+            # Исполнение SQL запроса
+            cursor.execute(sql, (language.Id,))
+            # Сохранение БД после удаления языка
+            connection.commit()
+            connection.close()
+        except sqlite3.OperationalError as errorMessage:
+            # Вывести ошибку, если возникло исключение
+            print(errorMessage)
+
+    def getGames(self, language: Language):
+        # SQL запрос для получения всех игр с данным языком из БД
+        sql = f"SELECT DISTINCT games.Id " \
+              f"FROM games " \
+              f"JOIN languages_to_games ON languages_to_games.Id_game = games.Id " \
+              f"JOIN languages ON languages.Id = languages_to_games.Id_language " \
+              f"WHERE languages.Name = ?;"
+        try:
+            # Подключение к БД
+            connection = sqlite3.connect(self.connectingStr)
+            cursor = connection.cursor()
+            # Исполнение SQL запроса
+            cursor.execute(sql, (language.Name,))
+            # Получение результата SQL запроса
+            idGames = cursor.fetchall()
+            games = list()  # Список игр
+            for idGame in idGames:
+                games.append(SQLiteGameRepository().getById(idGame[0]))
+            connection.close()
+            # Вернуть полученный результат
+            return games
+        except sqlite3.OperationalError as errorMessage:
+            # Вывести ошибку, если возникло исключение
+            print(errorMessage)
+
+if __name__ == '__main__':
+    BD = SQLiteLanguageRepository()
+    games = BD.getGames(Language("Английский"))
+    for game in games:
+        print(game.toString())
+

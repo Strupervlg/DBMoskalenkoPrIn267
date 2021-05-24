@@ -53,6 +53,14 @@ class IGameRepository(IBaseRepository):
         """
         pass
 
+    def getLanguages(self, game: Game):
+        """
+        Получение всех языков игры
+        :param game: игра для получения языков
+        :return: список языков
+        """
+        pass
+
 class IGameSeriesRepository(IBaseRepository):
     """
     Интерфейс для репозитория серии игр
@@ -67,6 +75,19 @@ class IGameSeriesRepository(IBaseRepository):
 
 class IEngineRepository(IBaseRepository):
     """
-    Интерфейс для репозитория игры
+    Интерфейс для репозитория движка
     """
     pass
+
+class ILanguageRepository(IBaseRepository):
+    """
+    Интерфейс для репозитория языка
+    """
+    def getGames(self, language: Language):
+        """
+        Получение всех игр на данном языке
+        :param language: язык для получения игр
+        :return: список всех игр
+        """
+        pass
+

@@ -66,8 +66,8 @@ class SQLiteGameRepository(IGameRepository):
             connection = sqlite3.connect(self.connectingStr)
             cursor = connection.cursor()
             # Исполнение SQL запроса
-            cursor.execute(sql, (game.Name, game.Brief_description, game.Date_announce,
-            game.Trailer_URL, game.Game_cover_URL, game.Game_website_URL, game.Id_Engine, game.Id_Game_series))
+            cursor.execute(sql, (game.Name, game.BriefDescription, game.DateAnnounce,
+            game.TrailerURL, game.GameCoverURL, game.GameWebsiteURL, game.IdEngine, game.IdGameSeries))
             # Сохранение добавленной игры в БД
             connection.commit()
             # Взять id добвленной игры из БД и присвоить его объекту новой игры
@@ -97,8 +97,8 @@ class SQLiteGameRepository(IGameRepository):
             connection = sqlite3.connect(self.connectingStr)
             cursor = connection.cursor()
             # Исполнение SQL запроса
-            cursor.execute(sql, (game.Name, game.Brief_description, game.Date_announce,
-            game.Trailer_URL, game.Game_cover_URL, game.Game_website_URL, game.Id_Engine, game.Id_Game_series, game.Id))
+            cursor.execute(sql, (game.Name, game.BriefDescription, game.DateAnnounce,
+            game.TrailerURL, game.GameCoverURL, game.GameWebsiteURL, game.IdEngine, game.IdGameSeries, game.Id))
             # Сохранение обновленной игры в БД
             connection.commit()
             connection.close()
@@ -207,7 +207,7 @@ class SQLiteGameSeriesRepository(IGameSeriesRepository):
             connection = sqlite3.connect(self.connectingStr)
             cursor = connection.cursor()
             # Исполнение SQL запроса
-            cursor.execute(sql, (gameSeries.Name, gameSeries.cover_URL))
+            cursor.execute(sql, (gameSeries.Name, gameSeries.CoverURL))
             # Сохранение БД после добавления игровой серии
             connection.commit()
             # Взять id добвленной серии игр из БД и присвоить его объекту новой серии игр
@@ -231,7 +231,7 @@ class SQLiteGameSeriesRepository(IGameSeriesRepository):
             connection = sqlite3.connect(self.connectingStr)
             cursor = connection.cursor()
             # Исполнение SQL запроса
-            cursor.execute(sql, (gameSeries.Name, gameSeries.cover_URL, gameSeries.Id))
+            cursor.execute(sql, (gameSeries.Name, gameSeries.CoverURL, gameSeries.Id))
             # Сохранение БД после обновления игровой серии
             connection.commit()
             connection.close()

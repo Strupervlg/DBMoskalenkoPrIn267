@@ -31,11 +31,12 @@ class Game:
         Перевести объект класса в строку
         :return: строка состоящая из полей класса
         """
+        # Если игровая серия существует вписать название игровой серии
         if self.gameSeries is not None:
             nameGameSeries = self.gameSeries.Name
         else:
             nameGameSeries = "None"
-
+        # Если движок существует вписать название движка
         if self.engine is not None:
             nameEngine = self.engine.Name
         else:
@@ -244,3 +245,22 @@ class Engine:
         """
         return f"Id: {self.Id}, Name: {self.Name}"
 
+class Language:
+    """
+    Класс языка игры
+    """
+    def __init__(self, name, id=None):
+        """
+        Конструктор класса
+        :param name: название языка
+        :param id: айди языка
+        """
+        self.Name = name
+        self.Id = id
+
+    def toString(self):
+        """
+        Перевести объект класса в строку
+        :return: строка состоящая из полей класса
+        """
+        return f"Id: {self.Id}, Name: {self.Name}"

@@ -142,6 +142,67 @@ class SQLiteGameRepository(IGameRepository):
             # Вывести ошибку, если возникло исключение
             print(errorMessage)
 
+    def getLanguages(self, game: Game):
+        # SQL запрос для всех языков игры из БД
+        sql = f"SELECT languages.Name, types_language.Name " \
+              f"FROM games " \
+              f"JOIN languages_to_games ON languages_to_games.Id_game = games.Id " \
+              f"JOIN languages ON languages.Id = languages_to_games.Id_language " \
+              f"JOIN types_language ON types_language.Id = languages_to_games.Id_type_language " \
+              f"WHERE games.Name = ?;"
+        try:
+            # Подключение к БД
+            connection = sqlite3.connect(self.connectingStr)
+            cursor = connection.cursor()
+            # Исполнение SQL запроса
+            cursor.execute(sql, (game.Name,))
+            # Получение результата SQL запроса
+            items = cursor.fetchall()
+            languages = list()
+            for item in items:
+                languages.append(Language(item[0], type=item[1]))
+            connection.close()
+            # Вернуть полученный рейтинг игры
+            return languages
+        except sqlite3.OperationalError as errorMessage:
+            # Вывести ошибку, если возникло исключение
+            print(errorMessage)
+
+    def addLanguage(self, game: Game, language: Language):
+        # SQL запрос для привязки языка к игре из БД
+        sql = f"INSERT INTO languages_to_games (`Id_game`, `Id_language`, `Id_type_language`)" \
+              f"VALUES (?, ?, ?)"
+        try:
+            # Подключение к БД
+            connection = sqlite3.connect(self.connectingStr)
+            cursor = connection.cursor()
+            # Исполнение SQL запроса
+            cursor.execute(sql, (int(game.Id), int(language.Id), int(language.Type)))
+            # Сохранение БД после добавления
+            connection.commit()
+            connection.close()
+        except sqlite3.OperationalError as errorMessage:
+            # Вывести ошибку, если возникло исключение
+            print(errorMessage)
+
+    def deleteLanguage(self, game: Game, language: Language):
+        # SQL запрос для привязки языка к игре из БД
+        sql = f"DELETE FROM languages_to_games " \
+              f"WHERE Id_game = ? AND Id_language = ? AND Id_type_language = ?"
+        try:
+            # Подключение к БД
+            connection = sqlite3.connect(self.connectingStr)
+            cursor = connection.cursor()
+            # Исполнение SQL запроса
+            cursor.execute(sql, (int(game.Id), int(language.Id), int(language.Type)))
+            # Сохранение БД после добавления
+            connection.commit()
+            connection.close()
+        except sqlite3.OperationalError as errorMessage:
+            # Вывести ошибку, если возникло исключение
+            print(errorMessage)
+
+
 
 class SQLiteGameSeriesRepository(IGameSeriesRepository):
     """
@@ -458,10 +519,4 @@ class SQLiteLanguageRepository(ILanguageRepository):
         except sqlite3.OperationalError as errorMessage:
             # Вывести ошибку, если возникло исключение
             print(errorMessage)
-
-if __name__ == '__main__':
-    BD = SQLiteLanguageRepository()
-    games = BD.getGames(Language("Английский"))
-    for game in games:
-        print(game.toString())
 

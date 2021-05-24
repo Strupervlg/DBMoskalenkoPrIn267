@@ -249,7 +249,7 @@ class Language:
     """
     Класс языка игры
     """
-    def __init__(self, name, id=None):
+    def __init__(self, name, id=None, type=None):
         """
         Конструктор класса
         :param name: название языка
@@ -257,6 +257,7 @@ class Language:
         """
         self.Name = name
         self.Id = id
+        self.Type = type
 
     def toString(self):
         """
@@ -264,3 +265,10 @@ class Language:
         :return: строка состоящая из полей класса
         """
         return f"Id: {self.Id}, Name: {self.Name}"
+
+    def toStringForGames(self):
+        """
+        Перевести объект класса в строку
+        :return: строка состоящая из полей класса
+        """
+        return f"Name: {self.Name}, Type: {self.Type}"

@@ -61,6 +61,22 @@ class IGameRepository(IBaseRepository):
         """
         pass
 
+    def addLanguage(self, game: Game, language: Language):
+        """
+        Добавление языка к игре
+        :param game: игра
+        :param language: язык вместе с типом
+        """
+        pass
+
+    def deleteLanguage(self, game: Game, language: Language):
+        """
+        Удаление языка у игры
+        :param game: игра
+        :param language: язык вместе с типом
+        """
+        pass
+
 class IGameSeriesRepository(IBaseRepository):
     """
     Интерфейс для репозитория серии игр

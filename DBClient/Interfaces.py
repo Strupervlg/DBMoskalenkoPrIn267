@@ -1,46 +1,50 @@
 from Entities import *
 
-class IGameRepository(Game):
+class IBaseRepository():
     """
-    Интерфейс для репозитория игры
+    Базовый интерфейс репозитория
     """
     def getAll(self):
         """
         Получение всех игры
-        :return: список игр
+        :return: список элементов таблицы
         """
         pass
 
     def getById(self, id: int):
         """
-        Получение игры по айди
-        :param id: айди игры
-        :return: игра
+        Получение элемента по айди
+        :param id: айди элемента
+        :return: элемент
         """
         pass
 
-    def add(self, game: Game):
+    def add(self, item):
         """
-        Добавление игры в БД
-        :param game: игра
-        :return: игра с айди из БД
-        """
-        pass
-
-    def update(self, game: Game):
-        """
-        Обновление игры в БД
-        :param game: обновленная игра
+        Добавление элемента в БД
+        :param item: элемент
+        :return: элемент с айди из БД
         """
         pass
 
-    def delete(self, game: Game):
+    def update(self, item):
         """
-        Удаление игры из БД
-        :param game: игра для удаления
+        Обновление элемента в БД
+        :param item: обновленный элемент
         """
         pass
 
+    def delete(self, item):
+        """
+        Удаление элемента из БД
+        :param item: элемент для удаления
+        """
+        pass
+
+class IGameRepository(IBaseRepository):
+    """
+    Интерфейс для репозитория игры
+    """
     def getAvgRating(self, game: Game):
         """
         Получение среднего рейтинга игры
@@ -49,47 +53,10 @@ class IGameRepository(Game):
         """
         pass
 
-class IGameSeriesRepository(GameSeries):
+class IGameSeriesRepository(IBaseRepository):
     """
     Интерфейс для репозитория серии игр
     """
-    def getAll(self):
-        """
-        Получение всех серий игр
-        :return: список серий игр
-        """
-        pass
-
-    def getById(self, id: int):
-        """
-        Получение серии игр по айди
-        :param id: айди серии игр
-        :return: серия игр
-        """
-        pass
-
-    def add(self, gameSeries: GameSeries):
-        """
-        Добавление серии игр в БД
-        :param gameSeries: серия игр
-        :return: серия игр с айди из БД
-        """
-        pass
-
-    def update(self, gameSeries: GameSeries):
-        """
-        Обновление серии игр в БД
-        :param gameSeries: обновленная серия игр
-        """
-        pass
-
-    def delete(self, gameSeries: GameSeries):
-        """
-        Удаление серии игр из БД
-        :param gameSeries: серия игр для удаления
-        """
-        pass
-
     def getCountGame(self, gameSeries: GameSeries):
         """
         Получение кол-во игр в серии игр
@@ -97,3 +64,4 @@ class IGameSeriesRepository(GameSeries):
         :return: кол-во игр в серии игр
         """
         pass
+

@@ -27,7 +27,7 @@ class SQLiteGameRepository(IGameRepository):
             items = cursor.fetchall()
             # Создать из полученных данных объекты игр
             for item in items:
-                games.append(Game(item[1], item[2], item[3], item[4], item[5], item[6], item[7], SQLiteGameSeriesRepository().getById(item[8]), item[0]))
+                games.append(Game(item[1], item[2], item[3], item[4], item[5], item[6], SQLiteEngineRepository().getById(item[7]), SQLiteGameSeriesRepository().getById(item[8]), item[0]))
             connection.close()
             # Вернуть список игр
             return games
@@ -52,7 +52,7 @@ class SQLiteGameRepository(IGameRepository):
             # Если результат есть, создать объект игры и вернуть ее
             if len(item) != 0:
                 game = item[0]
-                return Game(game[1], game[2], game[3], game[4], game[5], game[6], game[7], SQLiteGameSeriesRepository().getById(game[8]), game[0])
+                return Game(game[1], game[2], game[3], game[4], game[5], game[6], SQLiteEngineRepository().getById(game[7]), SQLiteGameSeriesRepository().getById(game[8]), game[0])
         except sqlite3.OperationalError as errorMessage:
             # Вывести ошибку, если возникло исключение
             print(errorMessage)

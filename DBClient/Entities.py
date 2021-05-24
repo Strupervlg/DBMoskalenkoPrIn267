@@ -3,7 +3,7 @@ class Game:
     Класс игры
     """
     def __init__(self, name, briefDescription = None, dateAnnounce = None, trailerURL = None,
-                 gameCoverURL = None, gameWebsiteURL = None, idEngine = None, idGameSeries = None, id = None):
+                 gameCoverURL = None, gameWebsiteURL = None, idEngine = None, setGameSeries = None, id = None):
         """
         Конструктор класса
         :param name: название игры
@@ -13,7 +13,7 @@ class Game:
         :param gameCoverURL: ссылка на обложку игры
         :param gameWebsiteURL: ссылка на сайт игры
         :param idEngine: айди движка
-        :param idGameSeries: айди серии игр
+        :param gameSeries: серия игр
         :param id: айди игры
         """
         self.Name = name
@@ -23,7 +23,7 @@ class Game:
         self.GameCoverURL = gameCoverURL
         self.GameWebsiteURL = gameWebsiteURL
         self.IdEngine = idEngine
-        self.IdGameSeries = idGameSeries
+        self.gameSeries = setGameSeries
         self.Id = id
 
     def toString(self):
@@ -31,9 +31,13 @@ class Game:
         Перевести объект класса в строку
         :return: строка состоящая из полей класса
         """
+        if self.gameSeries is not None:
+            nameGameSeries = self.gameSeries.Name
+        else:
+            nameGameSeries = "None"
         return f"Id: {self.Id}, Name: {self.Name}, Brief description: {self.BriefDescription}, Date announce: {self.DateAnnounce}, " \
                f"Trailer URL: {self.TrailerURL},  Game cover URL: {self.GameCoverURL}, Game website URL: {self.GameWebsiteURL}, " \
-               f"IdEngine: {self.IdEngine}, IdGameSeries: {self.IdGameSeries}"
+               f"IdEngine: {self.IdEngine}, NameGameSeries: {nameGameSeries}"
 
     def getName(self):
         """

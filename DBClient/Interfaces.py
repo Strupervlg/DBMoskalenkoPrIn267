@@ -65,3 +65,8 @@ class IGameSeriesRepository(IBaseRepository):
         """
         pass
 
+class IEngineRepository(IBaseRepository):
+    """
+    Интерфейс для репозитория игры
+    """
+    pass

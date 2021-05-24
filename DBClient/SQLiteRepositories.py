@@ -274,3 +274,55 @@ class SQLiteGameSeriesRepository(IGameSeriesRepository):
         except sqlite3.OperationalError as errorMessage:
             # Вывести ошибку, если возникло исключение
             print(errorMessage)
+
+class SQLiteEngineRepository(IEngineRepository):
+    def __init__(self):
+        """
+        Конструктор класса
+        """
+        self.connectingStr = "BDGames.db"
+
+    def getAll(self):
+        engines = list()  # Список серий игр
+        # SQL запрос для получения списка серий игр
+        sql = f"SELECT `Id`, `Name`" \
+              f"FROM engines"
+        try:
+            # Подключение к БД
+            connection = sqlite3.connect(self.connectingStr)
+            cursor = connection.cursor()
+            # Исполнение SQL запроса
+            cursor.execute(sql)
+            # Получение результата SQL запроса
+            items = cursor.fetchall()
+            # Создать из полученных данных объекты серий игр
+            for item in items:
+                engines.append(Engine(item[1], item[0]))
+            connection.close()
+            # Вернуть список серий игры
+            return engines
+        except sqlite3.OperationalError as errorMessage:
+            # Вывести ошибку, если возникло исключение
+            print(errorMessage)
+
+    def getById(self, id: int):
+        # SQL запрос для получения серии игр по id
+        sql = f"SELECT `Id`, `Name`" \
+              f"FROM engines " \
+              f"WHERE engines.Id = ?"
+        try:
+            # Подключение к БД
+            connection = sqlite3.connect(self.connectingStr)
+            cursor = connection.cursor()
+            # Исполнение SQL запроса
+            cursor.execute(sql, (id,))
+            # Получение результата SQL запроса
+            item = cursor.fetchall()
+            connection.close()
+            # Если результат есть, создать объект серии игр и вернуть ее
+            if len(item) != 0:
+                engine = item[0]
+                return Engine(engine[1], engine[0])
+        except sqlite3.OperationalError as errorMessage:
+            # Вывести ошибку, если возникло исключение
+            print(errorMessage)

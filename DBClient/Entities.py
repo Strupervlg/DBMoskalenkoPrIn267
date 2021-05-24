@@ -218,3 +218,24 @@ class GameSeries:
         """
         if url != '':
             self.CoverURL = url
+
+class Engine:
+    """
+    Класс движка игр
+    """
+    def __init__(self, name, id=None):
+        """
+        Конструктор класса
+        :param name: название движка игр
+        :param id: айди движка
+        """
+        self.Name = name
+        self.Id = id
+
+    def toString(self):
+        """
+        Перевести объект класса в строку
+        :return: строка состоящая из полей класса
+        """
+        return f"Id: {self.Id}, Name: {self.Name}"
+

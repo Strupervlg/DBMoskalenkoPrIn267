@@ -113,7 +113,7 @@ class SQLiteGameRepository(IGameRepository):
             connection = sqlite3.connect(self.connectingStr)
             cursor = connection.cursor()
             # Исполнение SQL запроса
-            cursor.execute(sql, game.Id)
+            cursor.execute(sql, (game.Id,))
             # Сохранение БД после удаления игры
             connection.commit()
             connection.close()
@@ -132,7 +132,7 @@ class SQLiteGameRepository(IGameRepository):
             connection = sqlite3.connect(self.connectingStr)
             cursor = connection.cursor()
             # Исполнение SQL запроса
-            cursor.execute(sql, game.Name)
+            cursor.execute(sql, (game.Name,))
             # Получение результата SQL запроса
             rating = cursor.fetchall()
             connection.close()
@@ -307,7 +307,7 @@ class SQLiteGameSeriesRepository(IGameSeriesRepository):
             connection = sqlite3.connect(self.connectingStr)
             cursor = connection.cursor()
             # Исполнение SQL запроса
-            cursor.execute(sql, gameSeries.Id)
+            cursor.execute(sql, (gameSeries.Id,))
             # Сохранение БД после удаления игры
             connection.commit()
             connection.close()
@@ -326,7 +326,7 @@ class SQLiteGameSeriesRepository(IGameSeriesRepository):
             connection = sqlite3.connect(self.connectingStr)
             cursor = connection.cursor()
             # Исполнение SQL запроса
-            cursor.execute(sql, (gameSeries.getName(),))
+            cursor.execute(sql, (gameSeries.Name,))
             # Получение результата SQL запроса
             countGame = cursor.fetchall()
             connection.close()

@@ -52,7 +52,33 @@ class SQLiteGameRepository(IGameRepository):
             # Если результат есть, создать объект игры и вернуть ее
             if len(item) != 0:
                 game = item[0]
-                return Game(game[1], game[2], game[3], game[4], game[5], game[6], SQLiteEngineRepository().getById(game[7]), SQLiteGameSeriesRepository().getById(game[8]), game[0])
+                return Game(game[1], game[2], game[3], game[4], game[5], game[6],
+                            SQLiteEngineRepository().getById(game[7]), SQLiteGameSeriesRepository().getById(game[8]),
+                            game[0])
+        except sqlite3.OperationalError as errorMessage:
+            # Вывести ошибку, если возникло исключение
+            print(errorMessage)
+
+    def getByName(self, name: str):
+        # SQL запрос для получение игры по названию
+        sql = f"SELECT `Id`, `Name`, `Brief_description`, `Date_announce`, `Trailer_URL`, " \
+              f"`Game_cover_URL`, `Game_website_URL`, `Id_Engine`, `Id_Game_series`" \
+              f"FROM games WHERE games.Name = ?"
+        try:
+            # Подключение к БД
+            connection = sqlite3.connect(self.connectingStr)
+            cursor = connection.cursor()
+            # Исполнение SQL запроса
+            cursor.execute(sql, (name,))
+            # Получение результата SQL запроса
+            item = cursor.fetchall()
+            connection.close()
+            # Если результат есть, создать объект игры и вернуть ее
+            if len(item) != 0:
+                game = item[0]
+                return Game(game[1], game[2], game[3], game[4], game[5], game[6],
+                            SQLiteEngineRepository().getById(game[7]), SQLiteGameSeriesRepository().getById(game[8]),
+                            game[0])
         except sqlite3.OperationalError as errorMessage:
             # Вывести ошибку, если возникло исключение
             print(errorMessage)
@@ -419,7 +445,7 @@ class SQLiteLanguageRepository(ILanguageRepository):
             print(errorMessage)
 
     def getById(self, id: int):
-        # SQL запрос для получения языков по id
+        # SQL запрос для получения языка по id
         sql = f"SELECT `Id`, `Name`" \
               f"FROM languages " \
               f"WHERE languages.Id = ?"
@@ -429,6 +455,28 @@ class SQLiteLanguageRepository(ILanguageRepository):
             cursor = connection.cursor()
             # Исполнение SQL запроса
             cursor.execute(sql, (id,))
+            # Получение результата SQL запроса
+            item = cursor.fetchall()
+            connection.close()
+            # Если результат есть, создать объект языка и вернуть ее
+            if len(item) != 0:
+                languages = item[0]
+                return Language(languages[1], languages[0])
+        except sqlite3.OperationalError as errorMessage:
+            # Вывести ошибку, если возникло исключение
+            print(errorMessage)
+
+    def getByName(self, name: str):
+        # SQL запрос для получения языка по названию
+        sql = f"SELECT `Id`, `Name`" \
+              f"FROM languages " \
+              f"WHERE languages.Name = ?"
+        try:
+            # Подключение к БД
+            connection = sqlite3.connect(self.connectingStr)
+            cursor = connection.cursor()
+            # Исполнение SQL запроса
+            cursor.execute(sql, (name,))
             # Получение результата SQL запроса
             item = cursor.fetchall()
             connection.close()
@@ -519,4 +567,3 @@ class SQLiteLanguageRepository(ILanguageRepository):
         except sqlite3.OperationalError as errorMessage:
             # Вывести ошибку, если возникло исключение
             print(errorMessage)
-

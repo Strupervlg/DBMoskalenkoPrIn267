@@ -77,6 +77,14 @@ class IGameRepository(IBaseRepository):
         """
         pass
 
+    def getByName(self, name: str):
+        """
+        Получение объекта игры по названию
+        :param name: название игры
+        :return: игра
+        """
+        pass
+
 class IGameSeriesRepository(IBaseRepository):
     """
     Интерфейс для репозитория серии игр
@@ -99,6 +107,14 @@ class ILanguageRepository(IBaseRepository):
     """
     Интерфейс для репозитория языка
     """
+    def getByName(self, name: str):
+        """
+        Получение объекта языка по названию
+        :param name: название языка
+        :return: язык
+        """
+        pass
+
     def getGames(self, language: Language):
         """
         Получение всех игр на данном языке
